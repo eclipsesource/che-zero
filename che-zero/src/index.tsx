@@ -19,16 +19,14 @@ const keycloakInitOptions: KeycloakInitOptions = {
   redirectUri: 'http://localhost:3000'
 }
 
-const keycloak = Keycloak(keycloakConfig);
+export const keycloak = Keycloak(keycloakConfig);
 
 keycloak
   .init(keycloakInitOptions)
   .then((auth) => {
     if (!auth) {
       window.location.reload();
-    } else {
-      console.info("Authenticated: " + keycloak.clientId);
-    }
+    } 
 
     // React Render after login
     ReactDOM.render(
