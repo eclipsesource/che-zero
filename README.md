@@ -51,3 +51,26 @@ CHE_WSAGENT_CORS_ALLOWED__ORIGINS: "NULL"
 ```
 * `kubectl scale --replicas=0 deployment/che -n che`
 * `kubectl scale --replicas=1 deployment/che -n che`
+
+## Use different identify provider for login (Google Example)
+
+### Google Example
+
+* Do not use your company account for this!
+* Go to https://console.developers.google.com/ and create a project
+* Create new credentials. We want OAuth Client ID. 
+* Choose web application as application type.
+* Authorized redirct URI is https://keycloak-che.192.168.99.100.nip.io/auth/realms/che/broker/google/endpoint
+* Note down client id and secret (Keepass)
+
+### Enable in Keycloak
+
+* Login to admin console
+* Identify providers page -> Add provider... -> Google
+* Enter client ID and Secret
+
+### Skip Keycloak Login Page and go directely to Google
+
+* Login to admin console in keycloak
+* Authentication menu item -> Flows Tab -> Select Browser from Drop down -> In Itendity provider row select Actions -> Config
+* Create authenticator config with "google" as Default identify provider

@@ -21,7 +21,7 @@ const keycloakInitOptions: KeycloakInitOptions = {
   redirectUri: CHE_ZERO_DOMAIN
 }
 
-export const keycloak = Keycloak(keycloakConfig);
+const keycloak = Keycloak(keycloakConfig);
 
 keycloak
   .init(keycloakInitOptions)
@@ -33,12 +33,18 @@ keycloak
     // React Render after login
     ReactDOM.render(
       <React.StrictMode>
-        <App cheDomain={CHE_DOMAIN} />
+        <App cheDomain={CHE_DOMAIN} keycloak={keycloak} />
       </React.StrictMode>,
       document.getElementById('root')
     );
 
     serviceWorker.unregister();
+
+    // refresh token every minute
+    // in the long run this should happen before API calls with like refresh if expiring in 30 minutes
+    setInterval(() => {
+      keycloak.updateToken(120)
+    }, 1000 * 60)
 
   }).catch(() => {
     console.error("Authentication Failed");
