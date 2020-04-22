@@ -2,10 +2,14 @@ import React from 'react';
 import './App.css';
 import WorkspaceList from './WorkspaceList';
 
-function App() {
+interface AppProps {
+  cheDomain: string;
+}
+
+function App(props: AppProps) {
   return (
     <div className="App">
-      <WorkspaceList />
+      <WorkspaceList cheDomain={props.cheDomain} />
     </div>
   );
 }
