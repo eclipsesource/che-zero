@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { keycloak } from '.';
 
@@ -15,23 +16,48 @@ interface Workspace {
     };
 }
 
+interface WorkspaceListProps {
+    cheDomain: string;
+}
+
 interface WorkspaceListState {
     loading: boolean;
     data: Workspace[];
     error: boolean;
 }
 
-export default class WorkspaceList extends React.Component<Readonly<{}>, WorkspaceListState> {
-
-    constructor(props: Readonly<{}>) {
-        super(props);
-        this.state = { loading: true, data: [], error: false }
+function renderWorkspaces(data: Workspace[], error: boolean) {
+    if (error) {
+        return (
+            <p>Error while fetching workspaces</p>
+        )
     }
+    if (data.length === 0) {
+        return (
+            <p>No existing workspaces for your user</p>
+        )
+    }
+    return (
+        <ul>
+            {
+                data.map((ws: Workspace) => (
+                    <li key={ws.id}>Name: {ws.devfile.metadata.name} | Stack: {ws.attributes.stackName} | Status: {ws.status}</li>
+                ))
+            }
+        </ul>
+    );
+}
 
-    //TODO this only gets the first 30 workspaces
-    componentDidMount() {
+const WorkspaceList = (props: WorkspaceListProps) => {
+
+    const [loading, setLoading] = useState(true);
+    const [data, setWorkspaces] = useState([]);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        //TODO this only gets the first 30 workspaces
         //get workspaces
-        axios.get('https://che-che.192.168.99.100.nip.io/api/workspace?skipCount=0&maxItems=30',
+        axios.get(`https://che-che.${props.cheDomain}/api/workspace?skipCount=0&maxItems=30`,
             {
                 headers: {
                     'Accept': 'application/json',
@@ -39,41 +65,21 @@ export default class WorkspaceList extends React.Component<Readonly<{}>, Workspa
                 }
             })
             .then((response) => {
-                this.setState({ loading: false, data: response.data })
+                setWorkspaces(response.data)
+                setLoading(false)
             })
             .catch((error) => {
-                this.setState({ loading: false, error: true });
+                setError(true)
+                setLoading(false)
             });
-    }
+    });
 
-    renderWorkspaces(data: Workspace[], error: boolean) {
-        if (error) {
-            return (
-                <p>Error while fetching workspaces</p>
-            )
-        }
-        if(data.length === 0) {
-            return (
-                <p>No existing workspaces for your user</p>
-            )
-        }
-        return (
-            <ul>
-                {
-                    data.map((ws: Workspace) => (
-                        <li key={ws.id}>Name: {ws.devfile.metadata.name} | Stack: {ws.attributes.stackName} | Status: {ws.status}</li>
-                    ))
-                }
-            </ul>
-        );
-    }
-
-    render() {
-        return (
-            <div>
-                <h1>Your existing workspaces:</h1>
-                {this.state.loading ? "Fetching workspaces..." : this.renderWorkspaces(this.state.data, this.state.error)}
-            </div>
-        );
-    }
+    return (
+        <div>
+            <h1>Your existing workspaces:</h1>
+            {loading ? "Fetching workspaces..." : renderWorkspaces(data, error)}
+        </div>
+    );
 }
+
+export default WorkspaceList;
