@@ -84,7 +84,7 @@ function createWorkspace(devfile: Devfile, props: WorkspaceListProps, setWorkspa
         })
 }
 
-function getDevFile(newWSName: string, newWSStack: string): Devfile {
+export function getDevFile(newWSName: string, newWSStack: string): Devfile {
     if (newWSStack === 'coffee') {
         return coffeeDevfile(newWSName);
     }

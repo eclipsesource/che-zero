@@ -3,11 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js';
+import { KeycloakConfig } from 'keycloak-js';
 import Keycloak from 'keycloak-js';
 
 const CHE_DOMAIN = "192.168.99.100.nip.io";
-const CHE_ZERO_DOMAIN = "http://localhost:3000"
 
 // see https://che-che.${che_domain}/api/keycloak/settings for config options like realm and clientid
 const keycloakConfig: KeycloakConfig = {
@@ -16,15 +15,13 @@ const keycloakConfig: KeycloakConfig = {
   clientId: 'che-public'
 }
 
-const keycloakInitOptions: KeycloakInitOptions = {
-  onLoad: 'login-required',
-  redirectUri: CHE_ZERO_DOMAIN
-}
-
 const keycloak = Keycloak(keycloakConfig);
 
 keycloak
-  .init(keycloakInitOptions)
+  .init({
+    onLoad: 'login-required',
+    redirectUri: window.location.href
+  })
   .then((auth) => {
     if (!auth) {
       window.location.reload();
