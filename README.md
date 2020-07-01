@@ -72,5 +72,5 @@ CHE_WSAGENT_CORS_ALLOWED__ORIGINS: "NULL"
 ### Skip Keycloak Login Page and go directely to Google
 
 * Login to admin console in keycloak
-* Authentication menu item -> Flows Tab -> Select Browser from Drop down -> In Itendity provider row select Actions -> Config
+* Authentication menu item -> Flows Tab -> Select Browser from Drop down -> In Identity Provider row select Actions -> Config
 * Create authenticator config with "google" as Default identify provider

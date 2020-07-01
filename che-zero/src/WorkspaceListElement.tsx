@@ -27,7 +27,7 @@ function startWorkspace(id: string, props: WorkspaceListElementProps) {
             }
         })
         .catch((error) => {
-            alert("There was a problem, please retry")
+            console.error("Starting workspace failed", error)
         });
 }
 
@@ -45,7 +45,7 @@ function stopWorkspace(id: string, props: WorkspaceListElementProps) {
             }
         })
         .catch((error) => {
-            alert("There was a problem, please retry")
+            console.error("Stopping workspace failed", error)
         });
 }
 
@@ -63,7 +63,7 @@ function deleteWorkspace(id: string, props: WorkspaceListElementProps) {
             }
         })
         .catch((error) => {
-            alert("There was a problem, please retry")
+            console.error("Deleting workspace failed", error)
         });
 }
 

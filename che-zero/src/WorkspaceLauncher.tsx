@@ -1,7 +1,6 @@
 import React from "react";
 import axios from 'axios';
-import { Devfile } from "./devfile";
-import { javaDevfile } from './DevFiles';
+import { DevfileObject } from "./devfile";
 import { Workspace, getDevFile } from "./WorkspaceList";
 import { useParams } from "react-router-dom";
 
@@ -10,7 +9,7 @@ interface WorkspaceLauncherProps {
     keycloak: Keycloak.KeycloakInstance;
 }
 
-function createAndOpenWorkspace(devfile: Devfile, props: WorkspaceLauncherProps) {
+function createAndOpenWorkspace(devfile: DevfileObject, props: WorkspaceLauncherProps) {
     axios.post(`https://che-che.${props.cheDomain}/api/workspace/devfile`, devfile,
         {
             headers: {
@@ -27,15 +26,10 @@ function createAndOpenWorkspace(devfile: Devfile, props: WorkspaceLauncherProps)
         })
 }
 
-interface WorkspaceLauncherParams {
-    name?: string;
-    stack?: string;
-}
-
 const WorkspaceLauncher = (props: WorkspaceLauncherProps) => {
-    const params: WorkspaceLauncherParams = useParams();
-    if (params.name !== undefined && params.stack !== undefined) {
-        createAndOpenWorkspace(getDevFile(params.name, params.stack), props)
+    const { name, stack } = useParams();
+    if (name !== undefined && stack !== undefined) {
+        createAndOpenWorkspace(getDevFile(name, stack), props)
     }
     return (
         <div />

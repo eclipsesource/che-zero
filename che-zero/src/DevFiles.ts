@@ -1,6 +1,6 @@
-import { Devfile } from "./devfile";
+import { DevfileObject } from "./devfile";
 
-export function coffeeDevfile(name: string): Devfile {
+export function coffeeDevfile(name: string): DevfileObject {
     return {
         metadata: {
             name: name
@@ -15,7 +15,7 @@ export function coffeeDevfile(name: string): Devfile {
     }
 }
 
-export function javaDevfile(name: string): Devfile {
+export function javaDevfile(name: string): DevfileObject {
     return {
         metadata: {
             name: name
