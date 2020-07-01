@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Devfile } from './devfile';
+import { DevfileObject } from './devfile';
 import { coffeeDevfile, javaDevfile } from './DevFiles';
 import WorkspaceListElement from './WorkspaceListElement';
 
@@ -42,7 +42,7 @@ function renderWorkspaces(data: Workspace[], error: boolean, props: WorkspaceLis
         )
     }
     return (
-        data.map((ws: Workspace) => (
+        data.map((ws) => (
             <WorkspaceListElement key={ws.id} cheDomain={props.cheDomain} keycloak={props.keycloak} ws={ws} refreshWorkspaces={() => getWorkspaces(props, setWorkspaces, setLoading, setError)} />
         ))
     );
@@ -68,7 +68,7 @@ function getWorkspaces(props: WorkspaceListProps, setWorkspaces: React.Dispatch<
 }
 
 
-function createWorkspace(devfile: Devfile, props: WorkspaceListProps, setWorkspaces: React.Dispatch<React.SetStateAction<Workspace[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setError: React.Dispatch<React.SetStateAction<boolean>>) {
+function createWorkspace(devfile: DevfileObject, props: WorkspaceListProps, setWorkspaces: React.Dispatch<React.SetStateAction<Workspace[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setError: React.Dispatch<React.SetStateAction<boolean>>) {
     axios.post(`https://che-che.${props.cheDomain}/api/workspace/devfile`, devfile,
         {
             headers: {
@@ -84,7 +84,7 @@ function createWorkspace(devfile: Devfile, props: WorkspaceListProps, setWorkspa
         })
 }
 
-export function getDevFile(newWSName: string, newWSStack: string): Devfile {
+export function getDevFile(newWSName: string, newWSStack: string): DevfileObject {
     if (newWSStack === 'coffee') {
         return coffeeDevfile(newWSName);
     }
