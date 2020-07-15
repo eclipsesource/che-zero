@@ -17,20 +17,23 @@ input {
   margin-right: 5px;
 }
 
-input[type=submit], button {
-  border-color: #FDB940;
-  background-color: #FDB940;
+input[type='submit'],
+button {
+  border-color: #fdb940;
+  background-color: #fdb940;
   color: #282e44;
   margin-left: 5px;
   margin-right: 5px;
   min-width: 75px;
 }
 
-input[type=submit]:hover, button:hover {
+input[type='submit']:hover,
+button:hover {
   color: white;
 }
 
-input[type=submit]:active, button:active {
+input[type='submit']:active,
+button:active {
   border-color: #282e44;
   background-color: #282e44;
   color: white;
@@ -44,12 +47,12 @@ input[type=submit]:active, button:active {
 }
 
 .refresh:hover {
-  color: #FDB940;
-  border-color: #FDB940;
+  color: #fdb940;
+  border-color: #fdb940;
 }
 
 h1 {
-  color: #FDB940;
+  color: #fdb940;
 }
 
 .wslistinfo {
@@ -63,7 +66,7 @@ h1 {
 }
 
 .wslistrow:after {
-  content: "";
+  content: '';
   display: table;
   clear: both;
 }
