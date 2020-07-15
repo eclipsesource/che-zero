@@ -1,4 +1,13 @@
+# Che-Zero
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Coding Style and Guidelines
+
+This project uses ESLint and Prettier to apply automatic code formatting.
+If you are using VSCode, make sure to install the recommended extensions.
+For VSCode to recognize settings and recommended extensions,
+it might be necessary that the folder containing this README is the root folder of your workspace.
 
 ## Available Scripts
 
