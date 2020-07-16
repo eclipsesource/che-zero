@@ -4,15 +4,14 @@ import Keycloak from 'keycloak-js';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import WorkspaceLauncher from './WorkspaceLauncher';
-import WorkspaceList from './WorkspaceList';
+import { WorkspaceLauncher, WorkspaceList } from './components';
 
 interface AppProps {
   cheDomain: string;
   keycloak: Keycloak.KeycloakInstance;
 }
 
-function App(props: AppProps) {
+const App: React.FC<AppProps> = (props: AppProps) => {
   return (
     <Router>
       <Switch>
@@ -34,6 +33,6 @@ function App(props: AppProps) {
       </Switch>
     </Router>
   );
-}
+};
 
 export default App;

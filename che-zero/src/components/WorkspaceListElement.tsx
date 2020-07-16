@@ -10,7 +10,7 @@ interface WorkspaceListElementProps {
   keycloak: Keycloak.KeycloakInstance;
 }
 
-function openWorkspace(ws: Workspace, props: WorkspaceListElementProps) {
+const openWorkspace = (ws: Workspace, props: WorkspaceListElementProps) => {
   window.open(
     `https://che-che.${props.cheDomain}/workspace-loader/` +
       ws.namespace +
@@ -18,9 +18,9 @@ function openWorkspace(ws: Workspace, props: WorkspaceListElementProps) {
       ws.devfile.metadata.name,
     '_blank'
   );
-}
+};
 
-function startWorkspace(id: string, props: WorkspaceListElementProps) {
+const startWorkspace = (id: string, props: WorkspaceListElementProps) => {
   axios
     .post(
       `https://che-che.${props.cheDomain}/api/workspace/` +
@@ -42,9 +42,9 @@ function startWorkspace(id: string, props: WorkspaceListElementProps) {
     .catch((error) => {
       console.error('Starting workspace failed', error);
     });
-}
+};
 
-function stopWorkspace(id: string, props: WorkspaceListElementProps) {
+const stopWorkspace = (id: string, props: WorkspaceListElementProps) => {
   axios
     .delete(
       `https://che-che.${props.cheDomain}/api/workspace/` + id + '/runtime',
@@ -63,9 +63,9 @@ function stopWorkspace(id: string, props: WorkspaceListElementProps) {
     .catch((error) => {
       console.error('Stopping workspace failed', error);
     });
-}
+};
 
-function deleteWorkspace(id: string, props: WorkspaceListElementProps) {
+const deleteWorkspace = (id: string, props: WorkspaceListElementProps) => {
   axios
     .delete(`https://che-che.${props.cheDomain}/api/workspace/` + id, {
       headers: {
@@ -81,9 +81,11 @@ function deleteWorkspace(id: string, props: WorkspaceListElementProps) {
     .catch((error) => {
       console.error('Deleting workspace failed', error);
     });
-}
+};
 
-const WorkspaceListElement = (props: WorkspaceListElementProps) => {
+export const WorkspaceListElement: React.FC<WorkspaceListElementProps> = (
+  props: WorkspaceListElementProps
+) => {
   return (
     <div className='wslistrow'>
       <div className='wslistinfo'>Name: {props.ws.devfile.metadata.name}</div>
@@ -119,5 +121,3 @@ const WorkspaceListElement = (props: WorkspaceListElementProps) => {
     </div>
   );
 };
-
-export default WorkspaceListElement;

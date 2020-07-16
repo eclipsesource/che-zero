@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { DevfileObject } from './devfile';
+import { DevfileObject } from '../dev-files';
 import { getDevFile, Workspace } from './WorkspaceList';
 
 interface WorkspaceLauncherProps {
@@ -10,10 +10,10 @@ interface WorkspaceLauncherProps {
   keycloak: Keycloak.KeycloakInstance;
 }
 
-function createAndOpenWorkspace(
+const createAndOpenWorkspace = (
   devfile: DevfileObject,
   props: WorkspaceLauncherProps
-) {
+) => {
   axios
     .post(`https://che-che.${props.cheDomain}/api/workspace/devfile`, devfile, {
       headers: {
@@ -33,14 +33,12 @@ function createAndOpenWorkspace(
     .catch((error) => {
       alert('There was a problem, please retry');
     });
-}
+};
 
-const WorkspaceLauncher = (props: WorkspaceLauncherProps) => {
+export const WorkspaceLauncher = (props: WorkspaceLauncherProps) => {
   const { name, stack } = useParams();
   if (name !== undefined && stack !== undefined) {
     createAndOpenWorkspace(getDevFile(name, stack), props);
   }
   return <div />;
 };
-
-export default WorkspaceLauncher;
