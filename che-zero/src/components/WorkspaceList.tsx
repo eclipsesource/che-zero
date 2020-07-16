@@ -2,9 +2,8 @@ import axios from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import { DevfileObject } from './devfile';
-import { coffeeDevfile, javaDevfile } from './DevFiles';
-import WorkspaceListElement from './WorkspaceListElement';
+import { coffeeDevfile, DevfileObject, javaDevfile } from '../dev-files';
+import { WorkspaceListElement } from './WorkspaceListElement';
 
 export interface Workspace {
   id: string;
@@ -31,14 +30,14 @@ interface WorkspaceListState {
   error: boolean;
 }
 
-function renderWorkspaces(
+const renderWorkspaces = (
   data: Workspace[],
   error: boolean,
   props: WorkspaceListProps,
   setWorkspaces: React.Dispatch<React.SetStateAction<Workspace[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setError: React.Dispatch<React.SetStateAction<boolean>>
-) {
+) => {
   if (error) {
     return <p>Error while fetching workspaces</p>;
   }
@@ -56,16 +55,16 @@ function renderWorkspaces(
       }
     />
   ));
-}
+};
 
 //TODO this only gets the first 30 workspaces
 //get workspaces
-function getWorkspaces(
+const getWorkspaces = (
   props: WorkspaceListProps,
   setWorkspaces: React.Dispatch<React.SetStateAction<Workspace[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setError: React.Dispatch<React.SetStateAction<boolean>>
-) {
+) => {
   axios
     .get(
       `https://che-che.${props.cheDomain}/api/workspace?skipCount=0&maxItems=30`,
@@ -84,15 +83,15 @@ function getWorkspaces(
       setError(true);
       setLoading(false);
     });
-}
+};
 
-function createWorkspace(
+const createWorkspace = (
   devfile: DevfileObject,
   props: WorkspaceListProps,
   setWorkspaces: React.Dispatch<React.SetStateAction<Workspace[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setError: React.Dispatch<React.SetStateAction<boolean>>
-) {
+) => {
   axios
     .post(`https://che-che.${props.cheDomain}/api/workspace/devfile`, devfile, {
       headers: {
@@ -106,19 +105,19 @@ function createWorkspace(
     .catch((error) => {
       alert('There was a problem, please retry');
     });
-}
+};
 
-export function getDevFile(
+export const getDevFile = (
   newWSName: string,
   newWSStack: string
-): DevfileObject {
+): DevfileObject => {
   if (newWSStack === 'coffee') {
     return coffeeDevfile(newWSName);
   }
   return javaDevfile(newWSName);
-}
+};
 
-const WorkspaceList = (props: WorkspaceListProps) => {
+export const WorkspaceList = (props: WorkspaceListProps) => {
   const [loading, setLoading] = useState(true);
   const [data, setWorkspaces] = useState<Workspace[]>([]);
   const [error, setError] = useState(false);
@@ -188,5 +187,3 @@ const WorkspaceList = (props: WorkspaceListProps) => {
     </div>
   );
 };
-
-export default WorkspaceList;

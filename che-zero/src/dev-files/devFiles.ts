@@ -1,6 +1,6 @@
-import { DevfileObject } from './devfile';
+import { DevfileObject } from './types';
 
-export function coffeeDevfile(name: string): DevfileObject {
+export const coffeeDevfile = (name: string): DevfileObject => {
   return {
     metadata: {
       name: name,
@@ -13,9 +13,9 @@ export function coffeeDevfile(name: string): DevfileObject {
     ],
     apiVersion: '1.0.0',
   };
-}
+};
 
-export function javaDevfile(name: string): DevfileObject {
+export const javaDevfile = (name: string): DevfileObject => {
   return {
     metadata: {
       name: name,
@@ -61,4 +61,4 @@ export function javaDevfile(name: string): DevfileObject {
     ],
     apiVersion: '1.0.0',
   };
-}
+};

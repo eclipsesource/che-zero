@@ -9,6 +9,22 @@ If you are using VSCode, make sure to install the recommended extensions.
 For VSCode to recognize settings and recommended extensions,
 it might be necessary that the folder containing this README is the root folder of your workspace.
 
+### const vs function
+
+To define functions we use `const` and never `function`.
+While there is no difference in most cases, we'd like to maintain a consistent code style.
+This excludes class methods as they use neither.
+
+### Naming patterns
+
+- Folder names: kebap_case
+- File names
+  - PascalCase for files (mainly) containing a component or class
+  - camelCase for the rest, e.g. files with utility functions or multiple type/interface definitions
+- File content
+  - PascalCase for components, classes, interfaces, types
+  - camelCase for everything else, e.g. functions (except functional components), consts, variables, parameters, etc.
+
 ## Available Scripts
 
 In the project directory, you can run:
