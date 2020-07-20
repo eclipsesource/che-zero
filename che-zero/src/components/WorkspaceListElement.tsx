@@ -95,7 +95,6 @@ export const WorkspaceListElement: React.FC<WorkspaceListElementProps> = (
   return (
     <div className='wslistrow'>
       <div className='wslistinfo'>Name: {props.ws.devfile.metadata.name}</div>
-      <div className='wslistinfo'>Stack: {props.ws.attributes.stackName}</div>
       <div className='wslistinfo'>Status: {props.ws.status}</div>
       <div className='wslistbutton'>
         <button
