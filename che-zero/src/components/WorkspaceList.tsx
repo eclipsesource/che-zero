@@ -5,9 +5,11 @@ import { useEffect, useState } from 'react';
 import { coffeeDevfile, DevfileObject, javaDevfile } from '../dev-files';
 import { WorkspaceListElement } from './WorkspaceListElement';
 
+export type WorkspaceStatus = 'RUNNING' | 'STARTING' | 'STOPPED' | 'STOPPING';
+
 export interface Workspace {
   id: string;
-  status: string;
+  status: WorkspaceStatus;
   namespace: string;
   attributes: {
     stackName: string;

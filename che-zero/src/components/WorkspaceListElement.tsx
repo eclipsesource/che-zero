@@ -86,18 +86,29 @@ const deleteWorkspace = (id: string, props: WorkspaceListElementProps) => {
 export const WorkspaceListElement: React.FC<WorkspaceListElementProps> = (
   props: WorkspaceListElementProps
 ) => {
+  const status = props.ws.status;
+  const disableOpen = status !== 'RUNNING';
+  const disableStart = status !== 'STOPPED';
+  const disableStop = status === 'STOPPED' || status === 'STOPPING';
+  const disableDelete = status !== 'STOPPED';
+
   return (
     <div className='wslistrow'>
       <div className='wslistinfo'>Name: {props.ws.devfile.metadata.name}</div>
       <div className='wslistinfo'>Stack: {props.ws.attributes.stackName}</div>
       <div className='wslistinfo'>Status: {props.ws.status}</div>
       <div className='wslistbutton'>
-        <button type='button' onClick={(e) => openWorkspace(props.ws, props)}>
+        <button
+          type='button'
+          disabled={disableOpen}
+          onClick={(e) => openWorkspace(props.ws, props)}
+        >
           {' '}
           open{' '}
         </button>
         <button
           type='button'
+          disabled={disableStart}
           onClick={(e) => startWorkspace(props.ws.id, props)}
         >
           {' '}
@@ -105,6 +116,7 @@ export const WorkspaceListElement: React.FC<WorkspaceListElementProps> = (
         </button>
         <button
           type='button'
+          disabled={disableStop}
           onClick={(e) => stopWorkspace(props.ws.id, props)}
         >
           {' '}
@@ -112,6 +124,7 @@ export const WorkspaceListElement: React.FC<WorkspaceListElementProps> = (
         </button>
         <button
           type='button'
+          disabled={disableDelete}
           onClick={(e) => deleteWorkspace(props.ws.id, props)}
         >
           {' '}
