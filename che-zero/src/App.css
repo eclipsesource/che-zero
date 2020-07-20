@@ -17,8 +17,7 @@ input {
   margin-right: 5px;
 }
 
-input[type='submit'],
-button {
+input[type='submit'], button {
   border-color: #fdb940;
   background-color: #fdb940;
   color: #282e44;
@@ -27,16 +26,19 @@ button {
   min-width: 75px;
 }
 
-input[type='submit']:hover,
-button:hover {
+input[type='submit']:hover, button:hover {
   color: white;
 }
 
-input[type='submit']:active,
-button:active {
+input[type='submit']:active, button:active {
   border-color: #282e44;
   background-color: #282e44;
   color: white;
+}
+
+input[type='submit']:disabled, input[type='submit']:disabled:hover, button:disabled, button:disabled:hover {
+  opacity: 0.5;
+  color: #282e44;
 }
 
 .refresh {

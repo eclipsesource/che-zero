@@ -128,8 +128,28 @@ const WorkspaceCreationForm: React.FC<WorkspaceCreationFormProps> = ({
   workspaces,
   onSuccessfulWorkspaceCreation,
 }) => {
+  const [canCreate, setCanCreate] = useState(false);
   const [newWSName, setnewWSName] = useState('');
   const [newWSStack, setnewWSStack] = useState('java');
+
+  const onWsNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const enteredName = e.target.value;
+    let validName = false;
+    if (enteredName) {
+      const index = workspaces.findIndex(
+        (ws) =>
+          ws.devfile.metadata.name.toLowerCase() === enteredName.toLowerCase()
+      );
+
+      if (index === -1) {
+        // workspace with given name does not exist, yet.
+        validName = true;
+      }
+    }
+
+    setnewWSName(enteredName);
+    setCanCreate(validName);
+  };
 
   return (
     <form
@@ -147,11 +167,7 @@ const WorkspaceCreationForm: React.FC<WorkspaceCreationFormProps> = ({
     >
       <label>
         Name
-        <input
-          type='text'
-          value={newWSName}
-          onChange={(e) => setnewWSName(e.target.value)}
-        />
+        <input type='text' value={newWSName} onChange={onWsNameChange} />
       </label>
       <select
         id='stack'
@@ -161,7 +177,16 @@ const WorkspaceCreationForm: React.FC<WorkspaceCreationFormProps> = ({
         <option value='java'>Java</option>
         <option value='coffee'>Coffee</option>
       </select>
-      <input type='submit' value='Create Workspace' />
+      <input
+        type='submit'
+        value='Create Workspace'
+        disabled={!canCreate}
+        title={
+          canCreate
+            ? undefined
+            : 'Cannot create Workspace with this name because the entered name is invalid or already exists.'
+        }
+      />
     </form>
   );
 };
