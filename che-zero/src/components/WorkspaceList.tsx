@@ -11,9 +11,6 @@ export interface Workspace {
   id: string;
   status: WorkspaceStatus;
   namespace: string;
-  attributes: {
-    stackName: string;
-  };
   devfile: {
     metadata: {
       name: string;
