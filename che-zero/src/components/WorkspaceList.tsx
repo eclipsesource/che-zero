@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Keycloak from 'keycloak-js';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -86,21 +87,18 @@ const getWorkspaces = (
 
 const createWorkspace = (
   devfile: DevfileObject,
-  props: WorkspaceListProps,
-  setWorkspaces: React.Dispatch<React.SetStateAction<Workspace[]>>,
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  setError: React.Dispatch<React.SetStateAction<boolean>>
+  cheDomain: string,
+  keycloakIdToken: string | undefined,
+  onSuccessfulWorkspaceCreation: () => void
 ) => {
   axios
-    .post(`https://che-che.${props.cheDomain}/api/workspace/devfile`, devfile, {
+    .post(`https://che-che.${cheDomain}/api/workspace/devfile`, devfile, {
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${props.keycloak.idToken}`,
+        Authorization: `Bearer ${keycloakIdToken}`,
       },
     })
-    .then((response) => {
-      getWorkspaces(props, setWorkspaces, setLoading, setError);
-    })
+    .then((response) => onSuccessfulWorkspaceCreation())
     .catch((error) => {
       alert('There was a problem, please retry');
     });
@@ -116,12 +114,62 @@ export const getDevFile = (
   return javaDevfile(newWSName);
 };
 
+interface WorkspaceCreationFormProps {
+  cheDomain: string;
+  keycloakIdToken?: string;
+  workspaces: Workspace[];
+  /** Called after a workspace was successfully created. */
+  onSuccessfulWorkspaceCreation: () => void;
+}
+
+const WorkspaceCreationForm: React.FC<WorkspaceCreationFormProps> = ({
+  cheDomain,
+  keycloakIdToken,
+  workspaces,
+  onSuccessfulWorkspaceCreation,
+}) => {
+  const [newWSName, setnewWSName] = useState('');
+  const [newWSStack, setnewWSStack] = useState('java');
+
+  return (
+    <form
+      onSubmit={(e) => {
+        if (newWSName === undefined || newWSName.length === 0) {
+          alert('Name must be filled out');
+        }
+        createWorkspace(
+          getDevFile(newWSName, newWSStack),
+          cheDomain,
+          keycloakIdToken,
+          onSuccessfulWorkspaceCreation
+        );
+      }}
+    >
+      <label>
+        Name
+        <input
+          type='text'
+          value={newWSName}
+          onChange={(e) => setnewWSName(e.target.value)}
+        />
+      </label>
+      <select
+        id='stack'
+        name='stack'
+        onChange={(e) => setnewWSStack(e.target.value)}
+      >
+        <option value='java'>Java</option>
+        <option value='coffee'>Coffee</option>
+      </select>
+      <input type='submit' value='Create Workspace' />
+    </form>
+  );
+};
+
 export const WorkspaceList = (props: WorkspaceListProps) => {
   const [loading, setLoading] = useState(true);
   const [data, setWorkspaces] = useState<Workspace[]>([]);
   const [error, setError] = useState(false);
-  const [newWSName, setnewWSName] = useState('');
-  const [newWSStack, setnewWSStack] = useState('java');
 
   useEffect(() => getWorkspaces(props, setWorkspaces, setLoading, setError), [
     props,
@@ -151,38 +199,14 @@ export const WorkspaceList = (props: WorkspaceListProps) => {
 
       <h2>Create a workspace</h2>
 
-      <form
-        onSubmit={(e) => {
-          if (newWSName === undefined || newWSName.length === 0) {
-            alert('Name must be filled out');
-          }
-          createWorkspace(
-            getDevFile(newWSName, newWSStack),
-            props,
-            setWorkspaces,
-            setLoading,
-            setError
-          );
-        }}
-      >
-        <label>
-          Name
-          <input
-            type='text'
-            value={newWSName}
-            onChange={(e) => setnewWSName(e.target.value)}
-          />
-        </label>
-        <select
-          id='stack'
-          name='stack'
-          onChange={(e) => setnewWSStack(e.target.value)}
-        >
-          <option value='java'>Java</option>
-          <option value='coffee'>Coffee</option>
-        </select>
-        <input type='submit' value='Create Workspace' />
-      </form>
+      <WorkspaceCreationForm
+        cheDomain={props.cheDomain}
+        keycloakIdToken={props.keycloak.idToken}
+        workspaces={data}
+        onSuccessfulWorkspaceCreation={() =>
+          getWorkspaces(props, setWorkspaces, setLoading, setError)
+        }
+      />
     </div>
   );
 };
