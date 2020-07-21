@@ -2,7 +2,7 @@
   text-align: center;
   background-color: #282e44;
   color: white;
-  min-width: 1280px;
+  min-width: 960px;
   width: intrinsic;
   /* Safari/WebKit uses a non-standard name */
   width: -moz-max-content;
@@ -10,6 +10,12 @@
   width: -webkit-max-content;
   /* Chrome */
   width: max-content;
+}
+
+.App-Container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 input {
@@ -57,17 +63,17 @@ h1 {
   color: #fdb940;
 }
 
-.wslistinfo {
+.wslist-info {
   float: left;
-  width: 20%;
+  width: 25%;
 }
 
-.wslistbutton {
+.wslist-buttons {
   float: left;
-  width: 40%;
+  width: 50%;
 }
 
-.wslistrow:after {
+.wslist-row:after {
   content: '';
   display: table;
   clear: both;

@@ -93,10 +93,10 @@ export const WorkspaceListElement: React.FC<WorkspaceListElementProps> = (
   const disableDelete = status !== 'STOPPED';
 
   return (
-    <div className='wslistrow'>
-      <div className='wslistinfo'>Name: {props.ws.devfile.metadata.name}</div>
-      <div className='wslistinfo'>Status: {props.ws.status}</div>
-      <div className='wslistbutton'>
+    <div className='wslist-row'>
+      <div className='wslist-info'>Name: {props.ws.devfile.metadata.name}</div>
+      <div className='wslist-info'>Status: {props.ws.status}</div>
+      <div className='wslist-buttons'>
         <button
           type='button'
           disabled={disableOpen}
