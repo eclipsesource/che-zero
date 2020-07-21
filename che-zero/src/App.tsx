@@ -16,12 +16,14 @@ const App: React.FC<AppProps> = (props: AppProps) => {
     <Router>
       <Switch>
         <Route exact path='/'>
-          <div className='App'>
-            <h1>[ che-zero ]</h1>
-            <WorkspaceList
-              cheDomain={props.cheDomain}
-              keycloak={props.keycloak}
-            />
+          <div className='App-Container'>
+            <div className='App'>
+              <h1>[ che-zero ]</h1>
+              <WorkspaceList
+                cheDomain={props.cheDomain}
+                keycloak={props.keycloak}
+              />
+            </div>
           </div>
         </Route>
         <Route path='/start/:stack/:name'>
