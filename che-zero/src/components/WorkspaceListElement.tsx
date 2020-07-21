@@ -87,7 +87,7 @@ export const WorkspaceListElement: React.FC<WorkspaceListElementProps> = (
   props: WorkspaceListElementProps
 ) => {
   const status = props.ws.status;
-  const disableOpen = status !== 'RUNNING';
+  const disableOpen = status === 'STOPPING';
   const disableStart = status !== 'STOPPED';
   const disableStop = status === 'STOPPED' || status === 'STOPPING';
   const disableDelete = status !== 'STOPPED';
