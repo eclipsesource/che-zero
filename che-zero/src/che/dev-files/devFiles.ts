@@ -62,3 +62,13 @@ export const javaDevfile = (name: string): DevfileObject => {
     apiVersion: '1.0.0',
   };
 };
+
+export const getDevFile = (
+  workspaceName: string,
+  workspaceStack: string
+): DevfileObject => {
+  if (workspaceStack === 'coffee') {
+    return coffeeDevfile(workspaceName);
+  }
+  return javaDevfile(workspaceName);
+};

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 
-import { Workspace } from './WorkspaceList';
+import { Workspace } from '../che';
 
 interface WorkspaceListElementProps {
   cheDomain: string;
