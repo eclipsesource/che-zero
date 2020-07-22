@@ -2,8 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { DevfileObject } from '../dev-files';
-import { getDevFile, Workspace } from './WorkspaceList';
+import { DevfileObject, getDevFile, Workspace } from '../che';
 
 interface WorkspaceLauncherProps {
   cheDomain: string;

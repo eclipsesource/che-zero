@@ -1,42 +1,21 @@
 import axios from 'axios';
-import Keycloak from 'keycloak-js';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { coffeeDevfile, DevfileObject, javaDevfile } from '../dev-files';
+import {
+  CheProps,
+  DevfileObject,
+  getDevFile,
+  withWorkspaces,
+  WithWorkspacesProps,
+  Workspace,
+} from '../che';
 import { WorkspaceListElement } from './WorkspaceListElement';
-
-export type WorkspaceStatus = 'RUNNING' | 'STARTING' | 'STOPPED' | 'STOPPING';
-
-export interface Workspace {
-  id: string;
-  status: WorkspaceStatus;
-  namespace: string;
-  devfile: {
-    metadata: {
-      name: string;
-    };
-  };
-}
-
-interface WorkspaceListProps {
-  cheDomain: string;
-  keycloak: Keycloak.KeycloakInstance;
-}
-
-interface WorkspaceListState {
-  loading: boolean;
-  data: Workspace[];
-  error: boolean;
-}
 
 const renderWorkspaces = (
   data: Workspace[],
   error: boolean,
   props: WorkspaceListProps,
-  setWorkspaces: React.Dispatch<React.SetStateAction<Workspace[]>>,
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  setError: React.Dispatch<React.SetStateAction<boolean>>
+  refreshWorkspaces: () => void
 ) => {
   if (error) {
     return <p>Error while fetching workspaces</p>;
@@ -50,39 +29,9 @@ const renderWorkspaces = (
       cheDomain={props.cheDomain}
       keycloak={props.keycloak}
       ws={ws}
-      refreshWorkspaces={() =>
-        getWorkspaces(props, setWorkspaces, setLoading, setError)
-      }
+      refreshWorkspaces={refreshWorkspaces}
     />
   ));
-};
-
-//TODO this only gets the first 30 workspaces
-//get workspaces
-const getWorkspaces = (
-  props: WorkspaceListProps,
-  setWorkspaces: React.Dispatch<React.SetStateAction<Workspace[]>>,
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  setError: React.Dispatch<React.SetStateAction<boolean>>
-) => {
-  axios
-    .get(
-      `https://che-che.${props.cheDomain}/api/workspace?skipCount=0&maxItems=30`,
-      {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${props.keycloak.idToken}`,
-        },
-      }
-    )
-    .then((response) => {
-      setWorkspaces(response.data);
-      setLoading(false);
-    })
-    .catch((error) => {
-      setError(true);
-      setLoading(false);
-    });
 };
 
 const createWorkspace = (
@@ -102,16 +51,6 @@ const createWorkspace = (
     .catch((error) => {
       alert('There was a problem, please retry');
     });
-};
-
-export const getDevFile = (
-  newWSName: string,
-  newWSStack: string
-): DevfileObject => {
-  if (newWSStack === 'coffee') {
-    return coffeeDevfile(newWSName);
-  }
-  return javaDevfile(newWSName);
 };
 
 interface WorkspaceCreationFormProps {
@@ -191,34 +130,22 @@ const WorkspaceCreationForm: React.FC<WorkspaceCreationFormProps> = ({
   );
 };
 
-export const WorkspaceList = (props: WorkspaceListProps) => {
-  const [loading, setLoading] = useState(true);
-  const [data, setWorkspaces] = useState<Workspace[]>([]);
-  const [error, setError] = useState(false);
+type WorkspaceListProps = CheProps;
 
-  useEffect(() => getWorkspaces(props, setWorkspaces, setLoading, setError), [
-    props,
-  ]);
+const WorkspaceList = (props: WorkspaceListProps & WithWorkspacesProps) => {
+  const { error, workspaces, refreshWorkspaces } = props;
+
+  if (error) {
+    return <h2>An error occurred while fetching the workspaces.</h2>;
+  } else if (!workspaces) {
+    return <h2>Fetching workspaces ...</h2>;
+  }
 
   return (
     <div>
       <h2>Your workspaces</h2>
-      {loading
-        ? 'Fetching workspaces...'
-        : renderWorkspaces(
-            data,
-            error,
-            props,
-            setWorkspaces,
-            setLoading,
-            setError
-          )}
-      <button
-        className='refresh'
-        onClick={(e) =>
-          getWorkspaces(props, setWorkspaces, setLoading, setError)
-        }
-      >
+      {renderWorkspaces(workspaces, error, props, refreshWorkspaces)}
+      <button className='refresh' onClick={refreshWorkspaces}>
         Refresh
       </button>
 
@@ -227,11 +154,12 @@ export const WorkspaceList = (props: WorkspaceListProps) => {
       <WorkspaceCreationForm
         cheDomain={props.cheDomain}
         keycloakIdToken={props.keycloak.idToken}
-        workspaces={data}
-        onSuccessfulWorkspaceCreation={() =>
-          getWorkspaces(props, setWorkspaces, setLoading, setError)
-        }
+        workspaces={workspaces}
+        onSuccessfulWorkspaceCreation={refreshWorkspaces}
       />
     </div>
   );
 };
+
+const WrappedWorkspaceList = withWorkspaces(WorkspaceList);
+export { WrappedWorkspaceList as WorkspaceList };
