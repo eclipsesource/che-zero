@@ -3,19 +3,7 @@ import Keycloak from 'keycloak-js';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { useStateWithoutNotifications } from '../util';
-
-export type WorkspaceStatus = 'RUNNING' | 'STARTING' | 'STOPPED' | 'STOPPING';
-
-export interface Workspace {
-  id: string;
-  status: WorkspaceStatus;
-  namespace: string;
-  devfile: {
-    metadata: {
-      name: string;
-    };
-  };
-}
+import { Workspace } from './workspaces';
 
 /** Properties needed to communicate with Che. */
 export interface CheProps {
