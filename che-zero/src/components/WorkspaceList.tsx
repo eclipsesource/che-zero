@@ -1,9 +1,8 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 
 import {
   CheProps,
-  DevfileObject,
+  createWorkspace,
   getDevFile,
   withWorkspaces,
   WithWorkspacesProps,
@@ -32,25 +31,6 @@ const renderWorkspaces = (
       refreshWorkspaces={refreshWorkspaces}
     />
   ));
-};
-
-const createWorkspace = (
-  devfile: DevfileObject,
-  cheDomain: string,
-  keycloakIdToken: string | undefined,
-  onSuccessfulWorkspaceCreation: () => void
-) => {
-  axios
-    .post(`https://che-che.${cheDomain}/api/workspace/devfile`, devfile, {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${keycloakIdToken}`,
-      },
-    })
-    .then((response) => onSuccessfulWorkspaceCreation())
-    .catch((error) => {
-      alert('There was a problem, please retry');
-    });
 };
 
 interface WorkspaceCreationFormProps {
