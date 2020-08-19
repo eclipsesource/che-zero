@@ -23,6 +23,7 @@ keycloak
   .init({
     onLoad: 'login-required',
     redirectUri: window.location.href,
+    checkLoginIframe: false,
   })
   .then((auth) => {
     if (!auth) {
