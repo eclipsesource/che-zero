@@ -1,0 +1,10 @@
+# Patch file to configure Che's CORS settings for che zero
+spec:
+  server:
+    customCheProperties:
+      CHE_CORS_ENABLED: "true"
+      CHE_CORS_ALLOW__CREDENTIALS: "false"
+      CHE_CORS_ALLOWED__ORIGINS: "*"
+      CHE_WSAGENT_CORS_ENABLED: "true"
+      CHE_WSAGENT_CORS_ALLOW__CREDENTIALS: "true"
+      CHE_WSAGENT_CORS_ALLOWED__ORIGINS: "null"
