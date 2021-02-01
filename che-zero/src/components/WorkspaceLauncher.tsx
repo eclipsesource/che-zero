@@ -35,7 +35,7 @@ const createAndOpenWorkspace = (
 };
 
 export const WorkspaceLauncher = (props: WorkspaceLauncherProps) => {
-  const { name, stack } = useParams();
+  const { name, stack } = useParams<{ name?: string; stack?: string }>();
   if (name !== undefined && stack !== undefined) {
     createAndOpenWorkspace(getDevFile(name, stack), props);
   }
