@@ -2,7 +2,8 @@
 
 ## Disclaimer
 
-* This readme assumes that 192.168.99.100 is the IP for minikube. You can find the IP on your setup using ` minikube ip`
+* This readme assumes that 192.168.99.100 is the IP for minikube. You can find the IP on your setup using ` minikube ip`.
+* If your IP differs from the default, you can set it as environment variable `REACT_APP_CHE_DOMAIN`. E.g. if your Che runs on minikube with `export REACT_APP_CHE_DOMAIN=$(minikube ip).nip.io`
 * Che setups are a bit brittle (Che Updates, Kubernetes Updates, Minikube Updates) so parts of this setup may be out of date. The following versions were used as of writing:
   * minikube version: v1.7.3
   * Kubernetes Server Version: Major:"1", Minor:"17", GitVersion:"v1.17.3"

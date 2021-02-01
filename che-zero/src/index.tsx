@@ -6,9 +6,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './App';
+import { env } from './env';
 import * as serviceWorker from './serviceWorker';
 
-const CHE_DOMAIN = '192.168.99.100.nip.io';
+const CHE_DOMAIN = env().CHE_DOMAIN;
 
 // see https://che-che.${che_domain}/api/keycloak/settings for config options like realm and clientid
 const keycloakConfig: KeycloakConfig = {
