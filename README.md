@@ -39,6 +39,10 @@
 
 ## Open CHE API for Web App
 
+The Che API can be opened with or without using the Che operator.
+
+### Without Che operator
+
 * Disable Operator `kubectl scale --replicas=0 deployment/che-operator -n che` because the operator will undo the changes we make in the next step. 
 * `kubectl edit configmap che -n che` and add the following (the keys should not exist yet)
 ```
@@ -51,6 +55,15 @@ CHE_WSAGENT_CORS_ALLOWED__ORIGINS: "NULL"
 ```
 * `kubectl scale --replicas=0 deployment/che -n che`
 * `kubectl scale --replicas=1 deployment/che -n che`
+
+### With Che operator
+
+Set the required environment variables by patching the operator configuration.
+The operator will then automatically restart affected deployments of Che.
+
+```
+kubectl patch checluster/eclipse-che -n che --type=merge --patch "$(cat che-cors-settings-patch.yaml)"
+```
 
 ## Use different identify provider for login (Google Example)
 
