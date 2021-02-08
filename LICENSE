@@ -1,6 +1,2 @@
-To determine under which license you may use a file from the che-zero source code, 
-please resort to the header of that file. 
-
-If the file has no header, the following rules apply:
 1. File `che-zero/src/dev-files/types.ts` is licensed as EPL v2, see LICENSE.EPL2.txt
-2. All other files are licensed as "EPL v2 or MIT", see LICENSE.EPL2andMIT.txt
+2. All other files are licensed as "EPL v2 or MIT", see LICENSE.EPL2orMIT.txt
