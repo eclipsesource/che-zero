@@ -1,5 +1,8 @@
 # che-zero
 
+[![License: EPL v2.0](https://img.shields.io/badge/License-EPL%20v2.0-yellow.svg)](https://www.eclipse.org/legal/epl-2.0/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## Disclaimer
 
 * This readme assumes that 192.168.99.100 is the IP for minikube. You can find the IP on your setup using ` minikube ip`.
@@ -88,3 +91,7 @@ kubectl patch checluster/eclipse-che -n che --type=merge --patch "$(cat che-cors
 * Login to admin console in keycloak
 * Authentication menu item -> Flows Tab -> Select Browser from Drop down -> In Identity Provider row select Actions -> Config
 * Create authenticator config with "google" as Default identify provider
+
+## License
+
+Please see the `LICENSE` file for licensing information.
